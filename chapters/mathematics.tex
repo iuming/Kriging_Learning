@@ -1,6 +1,121 @@
 \section{克里金插值原理}
+Kriging方法是对于连续空间变化的随机模型，通过稀疏样本数据来预测未测量站点值的一种方法，其插值由先验协方差控制的高斯过程建模。在先验的适当假设下，克里金法可为中间值提供最佳的线性无偏预测。普通克里格法不需要过多额外信息，只需要这些信息加上测量值和它们的地理坐标。这是目前为止最流行的克里金方法；它在大多数情况下都能够应用，因为它的应用条件很容易得到。
+
+普通克里金方法是基于这样的假设：连续空间变化是随机的并且与空间相关。由于随机过程具有恒定的平均值与方差，因此预测点的值取决于相对位置，而与绝对位置无关。于是，我们把目标值分为确定性趋势值以及随机的自相关函数值：
+\begin{equation}
+    V\left( \mathbf{s} \right) = \mu\left( \mathbf{s} \right) + \varepsilon\left( \mathbf{s} \right)
+    \label{目标值分为确定性数值和随机自相关数值}
+\end{equation}
+其中$ V\left( \mathbf{s} \right) $是目标值，$ \mu\left( \mathbf{s} \right) $是确定性趋势值，$ \varepsilon\left( \mathbf{s} \right) $是随机的自相关函数值，$ \mathbf{s} $为标识位置，在三维空间中可视为空间$ x $(经度)、$ y $(纬度)、$ z $(高度)坐标。
+
+假设有$ N $个随机变量$ V $的值已经记录在采样点$ \mathbf{s}_{1}, \mathbf{s}_{2}, \mathbf{s}_{3} , \cdots , \mathbf{s}_{N} $作为已知点，对于克里金插值，我们通过以下公式预测其插值点$ \mathbf{s}_{0} $的值：
+\begin{equation}
+    \hat{V}\left( \mathbf{s}_{0} \right) = \sum_{i=1}^{N} \lambda_{i} V\left( \mathbf{s}_{i} \right)
+    \label{点克里金插值公式}
+\end{equation}
+其中，$ \lambda_{i} $为权重。为了确保估计值无偏以及权重之和为1，有：
+\begin{equation}
+    E\left[ \hat{V}\left( \mathbf{s}_{0} \right) - V\left( \mathbf{s}_{0} \right) \right] = 0
+    \label{点克里金插值无偏}
+\end{equation}
+\begin{equation}
+    \sum_{i=1}^{N} \lambda_{i} = 1
+    \label{点克里金插值权重之和为1}
+\end{equation}
+
+预测方差为：
+\begin{equation}
+    \begin{split}
+        Var\left[ \hat{V} \left( \mathbf{s}_{0} \right) \right]
+        & = E\left[ {\hat{V}\left( \mathbf{s}_{0} \right) - V\left( \mathbf{s}_{0} \right)}^{2} \right]     \\
+        & = 2 \sum_{i=1}^{N} \lambda_{i} \gamma\left( \mathbf{s}_{i} - \mathbf{s}_{0} \right) - \sum_{i=1}^{N} \sum_{i=1}^{N} \lambda_{i} \lambda_{j} \gamma\left( \mathbf{s}_{i} - \mathbf{s}_{j} \right)
+    \end{split}
+    \label{点克里金插值预测方差}
+\end{equation}
+其中，函数$ \gamma\left( \mathbf{s}_{i} - \mathbf{s}_{0} \right) $代表采样点$ \mathbf{s}_{i} $和目标预测点$ \mathbf{s}_{0} $之间的半方差函数(也称半变异函数)；$ \gamma\left( \mathbf{s}_{i} - \mathbf{s}_{j} \right) $是采样点$ \mathbf{s}_{i} $和$ \mathbf{s}_{j} $之间的半方差函数。
+
+半方差函数是从变异函数模型中导出的，一方面是因为没有观测值的数据点和目标点之间没有半方差的度量，另一方面原因是只有这样才能保证方差不是负的。如果一个目标点碰巧也是一个采样点，那么克里金方法直接返回那里的观测值，估计方差为零。
+
+前面所提到的克里金技术都是在预测特定未采样位置的变量值，这些位置可以被视为空间点，因此，这种克里金法也被称为点克里金法。当不确定性相对较大时，可能需要通过比单个点更大的区域上执行克里金法来得到平滑插值结果，这样的方法称为块克里金法。相比于点克里金法，块克里金法具有降低空间预测误差的优势，但是它可能丢失一些有用信息。但是为了得到更好的插值重构效果，块克里金表现的更好。
+
+与点克里金法插值公式相似，块克里金法的任意块估计值也是测量值的加权平均值：
+\begin{equation}
+    \hat{V}\left( B \right) = \sum_{i=1}^{N} \lambda_{i} V \left( \mathbf{s}_{i} \right)
+    \label{块克里金插值公式}
+\end{equation}
+
+与点克里金一样，块克里金公式中的$ \lambda_{i} $之和为1，其预测值方差为：
+\begin{equation}
+    \begin{split}
+        Var\left[ \hat{V} \left( \mathbf{B} \right) \right]
+        & = E\left[ {\hat{V}\left( \mathbf{B} \right) - V\left( \mathbf{B} \right)}^{2} \right]     \\
+        & = 2 \sum_{i=1}^{N} \lambda_{i} \gamma\left( \mathbf{s}_{i} , \mathbf{B} \right) - \sum_{i=1}^{N} \sum_{i=1}^{N} \lambda_{i} \lambda_{j} \gamma\left( \mathbf{s}_{i} - \mathbf{s}_{j} \right) - \overline{\gamma} \left( \mathbf{B}, \mathbf{B} \right)
+    \end{split}
+    \label{块克里金插值预测方差}
+\end{equation}
+其中，$ \gamma\left( \mathbf{s}_{i} , \mathbf{B} \right) $是数据点$ \mathbf{s}_{i} $和目标块$ \mathbf{B} $之间的平均半方差函数；$ \overline{\gamma} \left( \mathbf{B}, \mathbf{B} \right) $是目标块$ \mathbf{B} $内的平均半方差，即块内方差。
+
+下一步，要在权重之和为1的约束下，寻找使得预测值方差最小的权重。通过公式\ref{点克里金插值公式}-\ref{点克里金插值预测方差}，可推导出$ N+1 $个公式，其中包含$ N+1 $个未知数：
+\begin{equation}
+    \sum_{i=1}^{N} \lambda_{i} \gamma \left( \mathbf{s}_{i} - \mathbf{s}_{j} \right) + \psi \left( \mathbf{s}_{0} \right) = \gamma \left( \mathbf{s}_{j} - \mathbf{s}_{0} \right) \qquad \text{for all $ j $}
+    \label{点克里金法N个方程}
+\end{equation}
+\begin{equation}
+    \sum_{i=0}^{N}\lambda_{i} = 1
+    \label{点克里金法N+1个方程}
+\end{equation}
+其中，$ \psi \left( \mathbf{s}_{0} \right) $为拉格朗日数乘。
+
+
+由克里金方程中每个测量点所占的权重，可将预测方差公式变为：
+\begin{equation}
+    \sigma^{2}\left( \mathbf{s}_{0} \right) = \sum_{i=1}^{N} \lambda_{i} \gamma \left( \mathbf{s}_{i} - \mathbf{s}_{0} \right) + \psi \left( \mathbf{s}_{0} \right)
+    \label{点克里金法预测方差公式}
+\end{equation}
+
+克里金方程也可以写成矩阵形式：
+\begin{equation}
+    \mathbf{A} \mathbf{\lambda} = \mathbf{b}
+    \label{点克里金方程矩阵形式}
+\end{equation}
+其中，矩阵$ \mathbf{A} $表示第$ i $个取样点和第$ j $个取样点之间的半方差；$ \mathbf{\lambda} $表示权重和拉格朗日乘子向量；$ \mathbf{b} $表示每个采样点和目标点之间的半方差向量。
+
+矩阵$ \mathbf{A} $可逆，权重和拉格朗日乘子向量可表示为：
+\begin{equation}
+    \mathbf{\lambda} = \mathbf{A}^{-1} \mathbf{b}
+    \label{点克里金方程逆矩阵计算权重}
+\end{equation}
+
+矩阵形式计算预测方差为：
+\begin{equation}
+    \hat{\sigma}^{2} \left( \mathbf{s}_{0} \right) = \mathbf{b}^{T} \lambda
+    \label{点克里金方程矩阵形式计算预测方差}
+\end{equation}
+
+相同的，块克里金法也可按照以上推导，可得出计算公式：
+\begin{equation}
+    \sum_{i=1}^{N} \lambda_{i} \gamma \left( \mathbf{s}_{i} - \mathbf{s}_{j} \right) + \psi \left( \mathbf{B} \right) = \overline{\gamma} \left( \mathbf{s}_{j} , \mathbf{B} \right) \qquad \text{for all $ j $}
+\end{equation}
+\begin{equation}
+    \sum_{i=1}^{N} \lambda_{i} = 1
+\end{equation}
+
+块克里金预测方差为：
+\begin{equation}
+    \sigma^{2}\left( \mathbf{B} \right) = \sum_{i=1}^{N} \lambda_{i} \overline{\gamma} \left( \mathbf{s}_{i} , \mathbf{B} \right) + \psi \left( \mathbf{B} \right) - \overline{\gamma} \left( \mathbf{B} , \mathbf{B} \right)
+\end{equation}
+
+在块克里金法的矩阵表示中，$ \mathbf{b} $表示每个采样点和目标块之间的半方差向量，块克里金预测方差可表示为：
+\begin{equation}
+    \hat{\sigma}^{2} \left( \mathbf{B} \right) = \mathbf{b}^{T} \mathbf{\lambda} - \hat{\gamma} \left( \mathbf{B} , \mathbf{B} \right)
+\end{equation}
+
+通常情况下，块克里金法的预测方差都小于点克里金法，因为任何块克里金方差都完全包含在块内方差中。块克里金预测之间的波动也比点克里金预测之间的波动小一些，因此块克里金法生成的辐射场要比点克里金法生成的辐射场更加平滑。
+
+上面描述的克里金方程中充分的表现出了区域化变量理论以及变异函数与模型的重要性，因此，接下来的部分仔细讲述区域化变量理论和变异函数与模型的内容。
 
 \section{区域化变量理论}
+
 
 \section{变异函数与模型}
 
@@ -11,9 +126,7 @@
 \subsection{影响模型可靠性的因素}
 
 \section{克里金方法}
-
-\subsection{普通克里金方法}
-
+为了解决石油工程、采矿和地质、气象、土壤科学、精确农业、污染控制、公共卫生、渔业、动植物生态、遥感和水文学等方面日益复杂的问题，除普通克里金方法，已经开发了更复杂的克里金方法。
 \subsection{泛克里金方法}
 
 \subsection{简单克里金方法}
