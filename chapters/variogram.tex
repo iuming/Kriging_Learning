@@ -1,0 +1,81 @@
+\section{变异函数与模型}
+变异函数是许多地质统计学应用的基石。在统计学应用中，变异函数和任何与之适应的模型都应该是准确的，只有这样，重构出的数据才能更好地符合实际。克里金法需要使用一个变异函数，来得到最小地克里金预测方差。
+
+\subsection{半方差有序集}
+获得变异函数地第一步是通过已知的测量点数据$ V\left( \mathbf{s}_{1} \right) , V\left( \mathbf{s}_{2} \right) , \cdots $，(其中$ \mathbf{s}_{1} , \mathbf{s}_{2} , \cdots $表示样本在三维空间中的位置)来估算变异函数。在估算变异函数之前，需要保证选取的这些样本点是随机的，因为在定义变异函数时我们认为变量为随机过程的结果。
+
+估算变异函数的常用公式有Matheron矩量法估计(MoM)：
+\begin{equation}
+    \hat{\gamma}\left( \mathbf{h} \right) = \frac{1}{2m\left( \mathbf{h} \right)} \sum_{i=1}^{m\left( \mathbf{h} \right)} \{v\left( \mathbf{s}_{i} \right) - v\left( \mathbf{s}_{i} + \mathbf{h} \right)\}^{2}
+    \label{Matheron矩量法估计}
+\end{equation}
+其中，$ v\left( \mathbf{s}_{i} \right) $和$ v\left( \mathbf{s}_{i} + \mathbf{h} \right) $为位置在$ \mathbf{s}_{i} $和$ \mathbf{s}_{i} + \mathbf{h} $的测量值；$ m\left( \mathbf{h} \right) $为在滞后$ \mathbf{h} $处的成对比较次数。
+
+通过改变$ \mathbf{h} $，可以得到半方差的有序集，这些构成估计变异函数的数据。
+
+\subsection{变异函数模型}
+变异函数模型主要可以分为两类——有界函数和无界函数。最常用的三个变异函数模型为：幂函数(无界)、球函数(有界)和指数函数(渐进有界)。如果常用的变异函数不能够符合实际值，也可以拟合更加复杂的函数。
+
+下面介绍四种常见的变异函数：
+\paragraph{指数函数}
+指数函数是一种无界函数：
+\begin{equation}
+    \gamma\left( h \right) = c_{0} + g h^{\beta} \qquad \left( 0 < \beta < 2 \right)
+\end{equation}
+其中，$ c_{0} $为纵坐标截距，$ g $为变化的程度，$ \beta $为指数幂。
+\paragraph{球函数}
+球函数是一种有界函数(分段函数)：
+\begin{equation}
+    \gamma\left( h \right) =
+    \left\{
+    \begin{aligned}
+         & c_{0} + c\{ \frac{3h}{2r} - \frac{1}{2} \left( \frac{h}{r} \right)^{3} \}    \qquad & \left( 0 < h \leq r \right) \\
+         & c_{0} + c                                                                           & \left( h > r \right)        \\
+         & c                                                                                   & \left( h = 0 \right)
+    \end{aligned}
+    \right.
+\end{equation}
+其中，$ c_{0} $为块金方差；$ c $为空间相关程度的方差；$ r $为空间范围。
+\paragraph{指数函数}
+指数函数是一种渐进有界函数：
+\begin{equation}
+    \gamma \left( h \right) =
+    \left\{
+    \begin{aligned}
+         & c_{0} + c \{ 1 - \exp \left( - \frac{h}{a} \right) \} \qquad & \left( 0 < h \right) \\
+         & 0                                                            & \left( h = 0 \right)
+    \end{aligned}
+    \right.
+\end{equation}
+其中，$ a $为距离参数。该函数模型渐进地接近平滑，它的定义域为无穷，但是为了接近实际，通常定义一个有效距离范围。
+\paragraph{嵌套球形函数}
+嵌套球形函数是在不同范围采用不同的球函数：
+\begin{equation}
+    \gamma \left( h \right) =
+    \left\{
+    \begin{aligned}
+         & c_{0} + c_{1} \{ \frac{3h}{2r_{1}} - \frac{1}{2}\left( \frac{h}{r_{1}} \right)^{3} \} + c_{2} \{ \frac{3h}{2r_{2}} - \frac{1}{2}\left( \frac{h}{r_{2}} \right)^{3} \} \qquad & \left( 0 < h \leq r_{1} \right)     \\
+         & c_{0} + c_{1} + c_{2} \{ \frac{3h}{2r_{2}} - \frac{1}{2}\left( \frac{h}{r_{2}} \right)^{3} \}                                                                                & \left( r_{1} < h \leq r_{2} \right) \\
+         & c_{0} + c_{1} + c_{2}                                                                                                                                                        & \left( h > r_{2} \right)            \\
+         & 0                                                                                                                                                                            & \left( h = 0 \right)
+    \end{aligned}
+    \right.
+\end{equation}
+其中，$ c_{1},r_{1} $为近距离分量的空间相关程度方差和范围；$ c_{2},r_{2} $为远距离分量的空间相关程度方差和范围。
+
+\subsection{选取变异函数}
+在地质统计学中，变异函数拟合模型仍然存在争议，尽管它是克里金插值最重要的步骤之一。一些工程师们凭借肉眼来选取拟合模型，这可能导致半方差在点与点之间波动过大，并且它的准确性是不稳定的。因此，常常会有些选取指标来辅助我们来选取变异函数模型，例如RSS(残差平方和)、AIC(Akaike信息准则)。选取变异函数模型通常经过以下几个步骤：
+\begin{enumerate}
+    \item 将公式\ref{Matheron矩量法估计}计算出的半方差有序集，作为散点绘制在坐标图中；
+    \item 选择几个形状相似的模型，用加权最小二乘法依次进行拟合，绘制拟合曲线；
+    \item 评估选取的变异函数模型是否合理。若选取的模型都拟合得很好，则选择RSS最小的模型；若模型参数个数不相等，则选择AIC最少的模型。
+\end{enumerate}
+
+AIC估计公式为：
+\begin{equation}
+    AIC = \{ n \ln \left( \frac{2 \pi}{n} \right) + n + 2 \} + n \ln R + 2 p
+\end{equation}
+其中，$ n $为半方差有序集中点的个数；$ p $为模型参数的个数；$ R $为残差的均方。大括号里的表达式，对于任何选取模型都是常数，因此，判断AIC只需要计算：
+\begin{equation}
+    \hat{AIC} = n \ln R + 2 p
+\end{equation}

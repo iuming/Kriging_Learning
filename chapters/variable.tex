@@ -1,0 +1,46 @@
+\section{区域化变量理论}
+平稳性是克里金方法实用性的基础，假设插值区域数据视为有一定趋势的确定性变化，可以将插值空间场的数值分为两个部分，即确定性趋势函数值和随机自相关函数值：
+\begin{equation}
+    V \left( \mathbf{s} \right) = \mu \left( \mathbf{s} \right) + \varepsilon \left( \mathbf{s} \right)
+    \label{区域化变量}
+\end{equation}
+其中，$ \mu \left( \mathbf{s} \right) $为确定性函数变量；$ \varepsilon \left( \mathbf{s} \right) $为均值为0，协方差为$ C\left( \mathbf{h} \right) $的随机自相关变量，其中$ \mathbf{h} $是空间中的相对距离，称为滞后。
+
+协方差表达式为：
+\begin{equation}
+    C\left( \mathbf{h} \right) = E \left[ \varepsilon \left( \mathbf{s} \right) \varepsilon \left( \mathbf{s} + \mathbf{h} \right) \right]
+    \label{协方差表达式}
+\end{equation}
+
+当$ \mu \left( \mathbf{s} \right) $为常数时(也就是普通克里金方法，$ \mu \left( \mathbf{s} \right) = \mu \left( \text{常数} \right) $时)，协方差函数可以表达为：
+\begin{equation}
+    C\left( \mathbf{h} \right) = E \left[ \{ V\left( \mathbf{s} \right) - \mu \} \{ V\left( \mathbf{s} + \mathbf{h} \right) - \mu \} \right] = E \left[ \{ V \left( \mathbf{s} \right) \} \{ V \left( \mathbf{s} + \mathbf{h} \right) \} - \mu^{2} \right]
+    \label{协方差函数}
+\end{equation}
+其中，$  V \left( \mathbf{s} \right) $和$ V \left( \mathbf{s} + \mathbf{h} \right) $表示空间场物理变量在$ \mathbf{s} $和$ \mathbf{s} + \mathbf{h} $的值，$ E $表示期望。
+
+从公式\ref{协方差函数}看出，协方差仅与$ \mathbf{h} $有关，即样本之间在距离和方向上的间隔。这是基于二阶平稳性的假设，在实际空间场插值过程中，通常不能假设平均值是常数，否则方差就不存在。实际情况中，通常将平稳性假设改为Matheron所提出的内在平稳性假设\textsuperscript{\cite{matheron1965variables}}，即期望差为0：
+\begin{equation}
+    E\left[ V\left( \mathbf{s} \right) - V \left( \mathbf{s} + \mathbf{h} \right) \right] = 0
+\end{equation}
+
+从而可以推导出变异函数与预测值方差的关系：
+\begin{equation}
+    Var \left[ V\left( \mathbf{s} \right) - V\left( \mathbf{s} + \mathbf{h} \right) \right] = E\left[ \{ V\left( \mathbf{s} \right) - V \left( \mathbf{s} + \mathbf{h} \right) \}^{2} \right] = 2 \gamma\left( \mathbf{h} \right)
+\end{equation}
+其中，$ \gamma\left( \mathbf{h} \right) $是滞后$ \mathbf{h} $的半方差，它是与相对位置$ \mathbf{h} $有关的变异函数。
+
+对于二阶平稳状态，协方差函数和变异函数是等价的：
+\begin{equation}
+    \gamma \left( \mathbf{h} \right) = C \left( \mathbf{0} \right) - C \left( \mathbf{h} \right)
+\end{equation}
+其中，$ C \left( \mathbf{0} \right) = \sigma^{2} $表示方差。
+
+因此，对于普通克里金模型，半方差函数可以看成：
+\begin{equation}
+    \begin{split}
+        \gamma\left( \mathbf{h} \right)
+        & = \frac{1}{2} E \left[ \{ \varepsilon\left( \mathbf{s} \right) - \varepsilon \left( \mathbf{s} + \mathbf{h} \right)\}^{2} \right] \\
+        & = \frac{1}{2} E \left[ \{ V \left( \mathbf{s} \right) - V \left( \mathbf{s} + \mathbf{h} \right)\}^{2} \right]
+    \end{split}
+\end{equation}

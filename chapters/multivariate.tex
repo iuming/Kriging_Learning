@@ -1,0 +1,58 @@
+\section{克里金法的多变量扩展}
+为了解决石油工程、采矿和地质、气象、土壤科学、精确农业、污染控制、公共卫生、渔业、动植物生态、遥感和水文学等方面日益复杂的问题，克里金法已经发展出了许多不同种类的克里金方法。
+
+根据公式\ref{目标值分为确定性数值和随机自相关数值}中确定性函数的不同类型，可以将克里金法分为普通克里金法、泛克里金法、简单克里金法、指示克里金法、协同克里金法、概率克里金法、析取克里金法等。
+\paragraph{普通克里金法}
+普通克里金法假设的模型为：
+\begin{equation}
+    V\left( \mathbf{s} \right) = \mu + \varepsilon \left( \mathbf{s} \right)
+\end{equation}
+其中，$ \mu $为一个未知常量。
+
+选取普通克里金法，最主要的问题之一就是判断常量平均值的假设是否合理。普通克里金法凭借其显著的灵活性，是现如今应用最为广泛的克里金法。
+\paragraph{泛克里金法}
+泛克里金法的假设模型为：
+\begin{equation}
+    V\left( \mathbf{s} \right) = \mu\left( \mathbf{s} \right) + \varepsilon\left( \mathbf{s} \right)
+\end{equation}
+其中，$ \mu\left( \mathbf{s} \right) $为带有未知参量的函数，例如多项式函数、幂指函数等。
+\paragraph{简单克里金法}
+简单克里金法的假设模型为：
+\begin{equation}
+    V\left( \mathbf{s} \right) = \mu + \varepsilon\left( \mathbf{s} \right)
+\end{equation}
+其中，$ \mu $为已知常量，或者没有未知参量的函数。
+\paragraph{指示克里金法}
+指示克里金法的假设模型为：
+\begin{equation}
+    I\left( \mathbf{s} \right) = \mu + \varepsilon\left( \mathbf{s} \right)
+\end{equation}
+其中，$ \mu $为一个未知参量；$ I\left( \mathbf{s} \right) $为一个二进制变量。二进制数据的创建可利用连续数据的阈值实现，或观测数据可以为0或1。指示克里金法可用于离散数据的插值。
+\paragraph{协同克里金法}
+协同克里金法的假设模型为：
+\begin{equation}
+    \left\{
+    \begin{aligned}
+         & V_{1}\left( \mathbf{s} \right) = \mu_{1} + \varepsilon_{1}\left( \mathbf{s} \right) \\
+         & V_{2}\left( \mathbf{s} \right) = \mu_{2} + \varepsilon_{2}\left( \mathbf{s} \right)
+    \end{aligned}
+    \right.
+\end{equation}
+其中，$ \mu_{1} $和$ \mu_{2} $为未知常量；$ \varepsilon_{1}\left( \mathbf{s} \right) $和$ \varepsilon_{2}\left( \mathbf{s} \right) $为两个随机误差各自的自相关函数，它们之间存在互相关。
+\paragraph{概率克里金法}
+概率克里金法的假设模型为：
+\begin{equation}
+    \left\{
+    \begin{aligned}
+         & I\left( \mathbf{s} \right) = I\left( V\left( \mathbf{s} \right) > c_{t} \right) = \mu_{1} + \varepsilon_{1}\left( \mathbf{s} \right) \\
+         & V\left( \mathbf{s} \right) = \mu_{2} + \varepsilon_{2}\left( \mathbf{s} \right)
+    \end{aligned}
+    \right.
+\end{equation}
+其中，$ \mu_{1} $和$ \mu_{2} $为未知常量，$ I\left( \mathbf{s} \right) $为通过使用阈值指示$ I\left( V\left( \mathbf{s} \right) > c_{t} \right) $创建的二进制变量。
+\paragraph{析取克里金法}
+析取克里金法的假设模型为：
+\begin{equation}
+    f\left( V\left( \mathbf{s} \right) \right) = \mu_{1} + \varepsilon\left( \mathbf{s} \right)
+\end{equation}
+其中，$ \mu_{1} $为一个未知常量；$ f\left( V\left( \mathbf{s} \right) \right) $为$ V\left( \mathbf{s} \right) $的一个任意函数。若$ f\left( V\left( \mathbf{s} \right) \right) = I\left( V\left( \mathbf{s} \right) > c_{t} \right) $，则指示克里金就是析取克里金的一种特殊情况。
