@@ -1,10 +1,10 @@
 \section{变异函数与模型}
-变异函数是许多地质统计学应用的基石。在统计学应用中，变异函数和任何与之适应的模型都应该是准确的，只有这样，重构出的数据才能更好地符合实际。克里金法需要使用一个变异函数，来得到最小地克里金预测方差。
+变异函数是许多地质统计学应用的基石。在统计学应用中，变异函数和任何与之适应的模型都应该是准确的，只有这样，重构出的数据才能更好地符合实际。克里金法需要使用一个变异函数，来得到最小的克里金预测方差。
 
 \subsection{半方差有序集}
 获得变异函数地第一步是通过已知的测量点数据$ V\left( \mathbf{s}_{1} \right) , V\left( \mathbf{s}_{2} \right) , \cdots $，(其中$ \mathbf{s}_{1} , \mathbf{s}_{2} , \cdots $表示样本在三维空间中的位置)来估算变异函数。在估算变异函数之前，需要保证选取的这些样本点是随机的，因为在定义变异函数时我们认为变量为随机过程的结果。
 
-估算变异函数的常用公式有Matheron矩量法估计(MoM)：
+估算变异函数的常用方法有Matheron矩量法估计(MoM)：
 \begin{equation}
     \hat{\gamma}\left( \mathbf{h} \right) = \frac{1}{2m\left( \mathbf{h} \right)} \sum_{i=1}^{m\left( \mathbf{h} \right)} \{v\left( \mathbf{s}_{i} \right) - v\left( \mathbf{s}_{i} + \mathbf{h} \right)\}^{2}
     \label{Matheron矩量法估计}
