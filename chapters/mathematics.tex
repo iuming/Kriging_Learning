@@ -55,7 +55,7 @@ Kriging方法是对于连续空间变化的随机模型，通过稀疏样本数�
 \end{equation}
 其中，$ \gamma\left( \mathbf{s}_{i} , \mathbf{B} \right) $是数据点$ \mathbf{s}_{i} $和目标块$ \mathbf{B} $之间的平均半方差函数；$ \overline{\gamma} \left( \mathbf{B}, \mathbf{B} \right) $是目标块$ \mathbf{B} $内的平均半方差，即块内方差。
 
-下一步，要在权重之和为1的约束下，寻找使得预测值方差最小的权重。通过公式\ref{点克里金插值公式}-\ref{点克里金插值预测方差}，可推导出$ N+1 $个公式，其中包含$ N+1 $个未知数：
+下一步，要在权重之和为1的约束下，寻找使得预测值方差最小的权重。通过公式\ref{点克里金插值公式}减去\ref{点克里金插值预测方差}，可推导出$ N+1 $个公式，其中包含$ N+1 $个未知数：
 \begin{equation}
     \sum_{i=1}^{N} \lambda_{i} \gamma \left( \mathbf{s}_{i} - \mathbf{s}_{j} \right) + \psi \left( \mathbf{s}_{0} \right) = \gamma \left( \mathbf{s}_{j} - \mathbf{s}_{0} \right) \qquad \text{for all $ j $}
     \label{点克里金法N个方程}
